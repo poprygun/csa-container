@@ -14,12 +14,12 @@ RUN \
     git clone https://github.com/vmware-tanzu/cloud-suitability-analyzer.git \
     && ln -s /cloud-suitability-analyzer/rules /csa-rules
 
-WORKDIR /projects
+WORKDIR /csa-config
+
+COPY start.sh /csa-config
+RUN chmod +x /csa-config/start.sh
 
 RUN csa bins export && \
-    csa rules import –-rules-dir=/csa-rules && \
-    csa -p .
+    csa rules import –-rules-dir=/csa-rules
 
-
-# ENTRYPOINT ["csa-l"]
-SHELL ["/bin/bash", "-c"]
+ENTRYPOINT ["./start.sh"]
